@@ -1,4 +1,4 @@
-const { request } = require("express")
+const { request, response } = require("express")
 const express = require("express")
 const uuid = require('uuid') // para gerar id único universal. 
 const port = 3000
@@ -6,6 +6,10 @@ const app = express()
 app.use(express.json())
 
 const allRequest = []
+
+const checkRequestId = (request, response, next) => {
+    
+}
 
 // Rota que lista todos os pedidos já feitos
 
@@ -41,7 +45,7 @@ app.put('/allRequest/:id', (request, response) => {
     const index = allRequest.findIndex (user => user.id === id)
 
     if(index < 0) {
-        return response.status(404).json({message: "Request not found"})
+        return response.status(404).json({error: "Request not found"})
     }
 
     allRequest [index] = updateRequest
@@ -58,7 +62,7 @@ app.delete('/allRequest/:id', (request, response) => {
     const index = allRequest.findIndex (user => user.id === id)
 
     if(index < 0) {
-        return response.status(404).json({message: "Request not found"})
+        return response.status(404).json({error: "Request not found"})
     }
 
     allRequest.splice(index, 1)
@@ -77,10 +81,29 @@ app.get('/allRequest/:id', (request, response) => {
         return response.status(404).json({message: "Request not found"})
     }
 
-    return (allRequest[index])
+    const show = allRequest[index]
+
+    return response.json(show)
 })
 
+/*PATCH /order/:id: Essa rota recebe o id nos parâmetros e assim que ela for chamada, deve alterar o status do pedido recebido 
+pelo id para "Pronto".*/
 
+app.patch('/allRequest/:id', (request, response) => {
+
+    const {id} = request.params
+
+    const {order, clientName, price, status } = request.body
+
+    const index = allRequest.findIndex (user => user.id === id)
+
+    const callOrder =  allRequest[index]
+
+    callOrder.status = "Pronto"
+
+    return response.json (callOrder)
+
+})
 
 
 
