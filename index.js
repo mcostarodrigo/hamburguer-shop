@@ -68,14 +68,19 @@ app.put('/allRequest/:id', checkRequestId, (request, response) => {
 
 /*DELETE /order/:id: Essa rota deve deletar um pedido já feito com o id enviado nos parâmetros da rota.*/
 
-app.delete('/allRequest/:id', (request, response) => {
-    const { id } = request.params
+app.delete('/allRequest/:id',checkRequestId, (request, response) => {
+   
+    const index = request.pedidoIndex
+
+    const id = request.pedidoId
+    
+    /*const { id } = request.params
 
     const index = allRequest.findIndex(user => user.id === id)
 
     if (index < 0) {
         return response.status(404).json({ error: "Request not found" })
-    }
+    }*/
 
     allRequest.splice(index, 1)
 
@@ -84,14 +89,19 @@ app.delete('/allRequest/:id', (request, response) => {
 
 /*GET /order/:id: Essa rota recebe o id nos parâmetros e deve retornar um pedido específico*/
 
-app.get('/allRequest/:id', (request, response) => {
-    const { id } = request.params
+app.get('/allRequest/:id',checkRequestId, (request, response) => {
+
+    const index = request.pedidoIndex
+
+    const id = request.pedidoId
+    
+    /*const { id } = request.params
 
     const index = allRequest.findIndex(user => user.id === id)
 
     if (index < 0) {
         return response.status(404).json({ message: "Request not found" })
-    }
+    }*/
 
     const show = allRequest[index]
 
@@ -101,13 +111,17 @@ app.get('/allRequest/:id', (request, response) => {
 /*PATCH /order/:id: Essa rota recebe o id nos parâmetros e assim que ela for chamada, deve alterar o status do pedido recebido 
 pelo id para "Pronto".*/
 
-app.patch('/allRequest/:id', (request, response) => {
+app.patch('/allRequest/:id',checkRequestId, (request, response) => {
 
-    const { id } = request.params
+    /*const { id } = request.params*/
+
+    const index = request.pedidoIndex
+
+    const id = request.pedidoId
 
     const { order, clientName, price, status } = request.body
 
-    const index = allRequest.findIndex(user => user.id === id)
+    /*const index = allRequest.findIndex(user => user.id === id)*/
 
     const callOrder = allRequest[index]
 
