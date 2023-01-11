@@ -7,6 +7,8 @@ app.use(express.json())
 
 const allRequest = []
 
+/*Middleware para verificação de id, e obtenção de index */
+
 const checkRequestId = (request, response, next) => {
 
     const { id } = request.params
@@ -21,16 +23,26 @@ const checkRequestId = (request, response, next) => {
     next()
 }
 
+/*Middleware para mostrar url e método. */
+
+const showMethodUrl = (request, response, next) =>{
+    console.log(request.method)
+    console.log(request.url)
+    next()
+}
+
+
+
 // Rota que lista todos os pedidos já feitos
 
-app.get('/allRequest', (request, response) => {
+app.get('/allRequest',showMethodUrl, (request, response) => {
     return response.json(allRequest)
 })
 
 
 // Adicionando novo pedido
 
-app.post('/allRequest', (request, response) => {
+app.post('/allRequest',showMethodUrl, (request, response) => {
 
     const { order, clientName, price, status } = request.body
 
@@ -45,7 +57,7 @@ app.post('/allRequest', (request, response) => {
 /* Essa rota deve alterar um pedido já feito. Pode alterar,um ou todos os dados do pedido.O id do pedido deve ser enviado 
 nos parâmetros da rota.*/
 
-app.put('/allRequest/:id', checkRequestId, (request, response) => {
+app.put('/allRequest/:id', checkRequestId,showMethodUrl, (request, response) => {
 
     const { order, clientName, price, status } = request.body
 
@@ -68,7 +80,7 @@ app.put('/allRequest/:id', checkRequestId, (request, response) => {
 
 /*DELETE /order/:id: Essa rota deve deletar um pedido já feito com o id enviado nos parâmetros da rota.*/
 
-app.delete('/allRequest/:id',checkRequestId, (request, response) => {
+app.delete('/allRequest/:id',checkRequestId,showMethodUrl, (request, response) => {
    
     const index = request.pedidoIndex
 
@@ -89,7 +101,7 @@ app.delete('/allRequest/:id',checkRequestId, (request, response) => {
 
 /*GET /order/:id: Essa rota recebe o id nos parâmetros e deve retornar um pedido específico*/
 
-app.get('/allRequest/:id',checkRequestId, (request, response) => {
+app.get('/allRequest/:id',checkRequestId, showMethodUrl,(request, response) => {
 
     const index = request.pedidoIndex
 
@@ -111,7 +123,7 @@ app.get('/allRequest/:id',checkRequestId, (request, response) => {
 /*PATCH /order/:id: Essa rota recebe o id nos parâmetros e assim que ela for chamada, deve alterar o status do pedido recebido 
 pelo id para "Pronto".*/
 
-app.patch('/allRequest/:id',checkRequestId, (request, response) => {
+app.patch('/allRequest/:id',checkRequestId,showMethodUrl,(request, response) => {
 
     /*const { id } = request.params*/
 
